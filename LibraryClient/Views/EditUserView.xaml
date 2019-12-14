@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="LibraryClient.Views.EditUserView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LibraryClient.Views"
+             mc:Ignorable="d" 
+             >
+    <StackPanel Orientation="Vertical">
+        <Border Style="{StaticResource ViewBoxBorder}">
+            <StackPanel Orientation="Horizontal" Margin="0,20,20,20">
+                <Label>Brugernavn:</Label>
+                <TextBox x:Name="UserQueryTextBox" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Margin="30,0,0,0" Content="Find" Command="{Binding Path=GetUserCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding ElementName=UserQueryTextBox, Path=Text}" />
+            </StackPanel>
+        </Border>
+        <Border Style="{StaticResource ViewBoxBorder }">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Name="EditUserStackPanel" Margin="0,50,0,50" DataContext="{Binding User}">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Bruger-Id"/>
+                        <TextBox Style="{StaticResource DataField}"  IsEnabled="False" Name="VisBogIdFelt" Text="{Binding Id}"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Oprettelsesdato"/>
+                        <TextBox Style="{StaticResource DataField}"  IsEnabled="False" Text="{Binding JoinDate}"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label  Content="Sidst logget ind"/>
+                        <TextBox Style="{StaticResource DataField}"  IsEnabled="False" Text="{Binding LastLogin}"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label  Content="Brugernavn" />
+                        <TextBox Style="{StaticResource DataField}"  IsEnabled="False" Name="VisBogForfatterFelt" Text="{Binding UserName}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Roller" />
+                        <ListBox x:Name="UserRolesLB" Width="250" Height="150" ItemsSource="{Binding Roles, UpdateSourceTrigger=Default}" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,50,0,50" VerticalAlignment="Bottom">
+                    <StackPanel Orientation="Horizontal" Margin="120,0,0,10">
+                        <Button Content="Fjern valgte rolle" Width="120" Margin="20,0,30,0" Command="{Binding Path=RemoveRoleCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding ElementName=UserRolesLB, Path=SelectedItem}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="140,0,0,0">
+                        <ComboBox Name="RolesCB" ItemsSource="{Binding Roles}" Width="120"/>
+                        <Button Margin="10,0,0,0" Content="Tilføj Rolle" Width="100" Command="{Binding Path=AddRoleCommand, UpdateSourceTrigger=PropertyChanged}" CommandParameter="{Binding ElementName=RolesCB, Path=SelectedItem}" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <StackPanel Margin="30" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button Content="Afbryd" Width="100" Command="{Binding Path=CancelCommand, UpdateSourceTrigger=Default}" />
+            <Button Content="Gem" Width="100" Command="{Binding Path=SaveUserCommand, UpdateSourceTrigger=Default}" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

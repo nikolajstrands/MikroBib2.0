@@ -12,26 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Net.Http;
-using Newtonsoft.Json;
-using LibraryClient.Models;
-using System.Collections.ObjectModel;
-using LibraryClient.ViewModels;
-using System.Threading;
 
-namespace LibraryClient
+namespace LibraryClient.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AddBookView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AddBookView : UserControl
     {
-        public MainWindowViewModel ViewModel { get; set; } = new MainWindowViewModel();
-
-        public MainWindow()
+        public AddBookView()
         {
             InitializeComponent();
         }
-        
     }
 }

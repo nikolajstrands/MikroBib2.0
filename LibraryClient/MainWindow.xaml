@@ -4,9 +4,101 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LibraryClient"
+        xmlns:views="clr-namespace:LibraryClient.Views"
+        xmlns:viewModels="clr-namespace:LibraryClient.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MikroBib LMS 2.0" WindowState="Maximized"
+        DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
+            <views:HomeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:NavigationViewModel}">
+            <views:NavigationView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:BookViewModel}">
+            <views:BookView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:EditBookViewModel}">
+            <views:EditBookView />
+        </DataTemplate>
+        <local:MenuMultiValueConverter x:Key="MenuMultiValueConverter" />
+    </Window.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <DockPanel LastChildFill="True" >
+                <Grid DockPanel.Dock="Top" Height="170" Background="#040926">
+                    <DockPanel Margin="30,0,30,0">
+                        <Border BorderBrush="#ffa400" HorizontalAlignment="Stretch" BorderThickness="0,0,0,2" >
+                            <DockPanel>
+                                <Label x:Name="CurrentPageName" Content="{Binding CurrentPageViewModel.Name}" Visibility="Collapsed" Foreground="White"/>
+                                <ItemsControl DockPanel.Dock="Left" ItemsSource="{Binding PageViewModels}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button  x:Name="knap" Content="{Binding Name}"
+                                                    Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                    CommandParameter="{Binding }">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Margin" Value="0,30,30,0"/>
+                                                        <Setter Property="Height" Value="100"/>
+                                                        <Setter Property="Width" Value="90"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Value="True">
+                                                                <DataTrigger.Binding>
+                                                                    <MultiBinding Converter="{StaticResource MenuMultiValueConverter}">
+                                                                        <Binding ElementName="CurrentPageName" Path="Content"/>
+                                                                        <Binding  Path="Name"/>
+                                                                    </MultiBinding>
+                                                                </DataTrigger.Binding>
+                                                                <DataTrigger.Setters>
+                                                                    <Setter Property="Background" Value="#ffa400"/>
+                                                                </DataTrigger.Setters>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <StackPanel DockPanel.Dock="Right" Width="180" Margin="0,30,0,0" HorizontalAlignment="Right" Orientation="Vertical">
+                                    <Image Height="100" Stretch="Uniform">
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Setter Property="Source" Value="Images/user-4-512-blue.png" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Value="Anonym" Binding="{Binding AppState.User.UserName}">
+                                                        <Setter Property="Source" Value="Images/user-4-512-grey.png"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                    <Label Margin= "0,5,0,0" Width="180" HorizontalContentAlignment="Center" Foreground="White" Content="{Binding AppState.User.UserName}"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </DockPanel>
+                </Grid>
+                <Grid>
+                    <Grid.Background>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#040926" Offset="1"/>
+                            <GradientStop Color="#2a2a72"/>
+                        </RadialGradientBrush>
+                    </Grid.Background>
+                    <ContentControl Content="{Binding CurrentPageViewModel}" />
+                </Grid>
+            </DockPanel>
+        </Grid>
+    </ScrollViewer>
 </Window>

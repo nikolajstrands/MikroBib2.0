@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="LibraryClient.Views.PatronStatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LibraryClient.Views"
+             mc:Ignorable="d" 
+              d:DesignWidth="800">
+    
+    <StackPanel Orientation="Vertical">
+        <Border Style="{StaticResource ViewBoxBorder}">
+            <StackPanel Orientation="Horizontal" Margin="0,20,20,20">
+                <Label >Låner-Id:</Label>
+                <TextBox x:Name="patronQueryTextBox"  Text="{Binding PatronId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Margin="30,0,0,0" Content="Find" Command="{Binding Path=GetPatronCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding ElementName=patronQueryTextBox, Path=Text}" />
+            </StackPanel>
+        </Border>
+        <Border Style="{StaticResource ViewBoxBorder}">
+            <StackPanel Orientation="Vertical"  Margin="0,20,20,20" DataContext="{Binding Path=Patron}" >
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label   Content="Fornavn" />
+                    <TextBox Style="{StaticResource DataField}"  IsEnabled="False" Text="{Binding FirstName}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label   Content="Efternavn" />
+                    <TextBox Style="{StaticResource DataField}" IsEnabled="False" Text="{Binding LastName}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label   Content="Adresse" />
+                    <TextBox Style="{StaticResource DataField}" IsEnabled="False" Text="{Binding Address}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Label Style="{StaticResource ListLabel}" Content="{Binding PatronBooks.Count}" ContentStringFormat="{}{0} bøger lånt" />
+        <ListView Style="{StaticResource ListStyle}"  Name="BorrowResultList" ItemsSource="{Binding PatronBooks}" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id" Width="30" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="Forfatter" Width="150" DisplayMemberBinding="{Binding AuthorFullName}" />
+                    <GridViewColumn Header="Titel" Width="200" DisplayMemberBinding="{Binding Title}" />
+                    <GridViewColumn Header="Afleveringsfrist" Width="150" DisplayMemberBinding="{Binding DueDate, StringFormat=dd/MM/yyyy  }" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Style="{StaticResource ButtonStackPanel}" >
+            <Button Content="Ryd"  Command="{Binding Path=ClearCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding Books }"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

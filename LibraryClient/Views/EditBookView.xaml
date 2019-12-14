@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="LibraryClient.Views.EditBookView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LibraryClient.Views"
+             mc:Ignorable="d" 
+             >
+
+    <StackPanel Orientation="Vertical">
+        <Border Style="{StaticResource ViewBoxBorder}">
+            <StackPanel Orientation="Horizontal" Margin="0,20,20,20">
+                <Label>Bog-Id:</Label>
+                <TextBox x:Name="BookQueryTextBox" Text="{Binding BookId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Margin="30,0,0,0" Content="Find" Command="{Binding Path=GetBookCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding ElementName=BookQueryTextBox, Path=Text}" />
+            </StackPanel>
+        </Border>
+        <Border Style="{StaticResource ViewBoxBorder}">
+            <StackPanel Margin="0,50,0,50" Orientation="Vertical" Name="EditBookStackPanel" DataContext="{Binding Book}">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label Content="Bog-Id" />
+                    <TextBox Style="{StaticResource DataField}" IsEnabled="False" Text="{Binding Id, Mode=TwoWay}"  />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label   Content="Forfatter, fornavn" />
+                    <TextBox Style="{StaticResource DataField}"  Text="{Binding AuthorFirstName}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label   Content="Forfatter, efternavn" />
+                    <TextBox Style="{StaticResource DataField}" Text="{Binding AuthorLastName}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label Content="Titel" />
+                    <TextBox Style="{StaticResource DataField}" Text="{Binding Title, Mode=TwoWay}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label Content="Sidetal" />
+                    <TextBox Style="{StaticResource DataField}" Text="{Binding NumberOfPages}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label Content="Udgiver" />
+                    <TextBox Style="{StaticResource DataField}" Text="{Binding Publisher}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label Content="Udgivelsesår" />
+                    <TextBox Style="{StaticResource DataField}" Text="{Binding YearPublished}" />
+                </StackPanel>
+                <StackPanel  Orientation="Horizontal" Margin="0,30,0,10">
+                    <Label Content="Udlånt" />
+                    <CheckBox IsEnabled="False"  IsChecked="{Binding IsBorrowed}" />
+                </StackPanel>
+                <StackPanel  Orientation="Horizontal" Margin="0,0,0,10">
+                    <Label Content="Afleveringsdato" />
+                    <TextBox Style="{StaticResource DataField}" IsEnabled="False" Text="{Binding DueDate, StringFormat=dd/MM/yyyy}" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <StackPanel Style="{StaticResource ButtonStackPanel}">
+            <Button Content="Gem" Command="{Binding Path=SaveBookCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding ElementName=EditBookStackPanel, Path=DataContext}" />
+            <Button Content="Slet bog" Command="{Binding Path=DeleteBookCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding ElementName=EditBookStackPanel, Path=DataContext}" />
+            <Button Content="Fortryd" Command="{Binding Path=CancelCommand, UpdateSourceTrigger=Default}" />
+        </StackPanel>
+    </StackPanel>
+
+    
+</UserControl>

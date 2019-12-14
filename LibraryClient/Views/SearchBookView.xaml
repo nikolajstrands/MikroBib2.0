@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="LibraryClient.SearchBookView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LibraryClient"
+             mc:Ignorable="d" 
+             >
+
+    <StackPanel Orientation="Vertical">
+        <Border Style="{StaticResource ViewBoxBorder}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical"  Margin="0,30,0,50" x:Name="BookQueryStackPanel" DataContext="{Binding Path=Query, Mode=TwoWay}">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Bog-Id" />
+                        <TextBox Style="{StaticResource DataField}" Text="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label   Content="Forfatter" />
+                        <TextBox Style="{StaticResource DataField}"  Text="{Binding Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Titel" />
+                        <TextBox Style="{StaticResource DataField}" Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Udgiver" />
+                        <TextBox Style="{StaticResource DataField}" Text="{Binding Publisher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Label Content="Udgivelsesår" />
+                        <TextBox Style="{StaticResource DataField}" Text="{Binding YearPublished, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" x:Name="bookBox">
+                        <Label>Kun på hylden:</Label>
+                        <CheckBox IsChecked="{Binding OnlyOnShelf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="20,20,20,20" VerticalAlignment="Bottom">
+                    <Button Content="Nulstil" Command="{Binding Path=DismissQueryCommand, UpdateSourceTrigger=Default}" />
+                    <Button Content="Søg" Command="{Binding Path=GetBooksCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding ElementName=BookQueryStackPanel, Path=DataContext}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Label Style="{StaticResource ListLabel}" Content="{Binding Books.Count}" ContentStringFormat="{}{0} resultater vises" />
+        <ListView  Name="BorrowResultList" ItemsSource="{Binding Books}" Style="{StaticResource ListStyle}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id" Width="80" DisplayMemberBinding="{Binding Id}" />
+                    <GridViewColumn Header="Forfatter " Width="250" DisplayMemberBinding="{Binding AuthorFullName}" />
+                    <GridViewColumn Header="Titel" Width="200" DisplayMemberBinding="{Binding Title}" />
+                    <GridViewColumn Header="Udgiver" Width="200" DisplayMemberBinding="{Binding Publisher}" />
+                    <GridViewColumn Header="Udgivelsesår" Width="200" DisplayMemberBinding="{Binding YearPublished}" />
+                    <GridViewColumn Header="Afleveringsfrist" Width="150" DisplayMemberBinding="{Binding DueDate, StringFormat=dd/MM/yyyy  }" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Style="{StaticResource ButtonStackPanel}" >
+            <Button Content="Vis valgte" Command="{Binding Path=ShowBookDetailsCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding ElementName=BorrowResultList, Path=SelectedItem}" />
+            <Button Content="Ryd søgning"  Command="{Binding Path=ClearBooksCommand, UpdateSourceTrigger=Default}" CommandParameter="{Binding Books }"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
